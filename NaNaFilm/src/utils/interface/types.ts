@@ -41,6 +41,7 @@ export interface Movie {
 }
 
 export interface UserState {
+    Movies: Movie[];
     loading: boolean;
     movies: Movie[];
     favMovies: Movie[]; 

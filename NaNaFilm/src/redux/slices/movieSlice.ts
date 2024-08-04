@@ -1,17 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Movie, UserState } from "../../utils/interface/types";
+import { Movie } from "../../utils/interface/types"; // Ajusta la importación según tu estructura
 
-// Define el estado inicial para el slice de usuario
+interface UserState {
+  loading: boolean;
+  movies: Movie[];
+  favMovies: Movie[];
+  isSearch: boolean;
+  Movies: Movie[];
+}
+
 const initialState: UserState = {
   loading: false,
   movies: [],
   favMovies: [],
-  isSearch: false
+  isSearch: false,
+  Movies: []
 };
 
-// Crea el slice de usuario
 const userSlice = createSlice({
-  name: "movie", // Puedes considerar cambiar esto a "user" o "movies" si es más apropiado
+  name: "movie",
   initialState,
   reducers: {
     setLoading(state, action: PayloadAction<boolean>) {
@@ -29,8 +36,6 @@ const userSlice = createSlice({
   },
 });
 
-// Exporta las acciones
 export const { setLoading, setMovies, setFavMovies, setIsSearch } = userSlice.actions;
 
-// Exporta el reducer
 export default userSlice.reducer;
