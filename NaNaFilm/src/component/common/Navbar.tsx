@@ -143,7 +143,7 @@ const Navbar = () => {
                 to="/"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <h1 style={{ margin: 0 }}>Fmovies</h1>
+                <h1 style={{ margin: 0 }}>NaNaFilm</h1>
               </NavLink>
             </Box>
           </Grid>

@@ -1,5 +1,3 @@
-// MovieCard.tsx
-
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
   Card,
