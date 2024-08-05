@@ -132,7 +132,7 @@ const SignUp = () => {
                 Already have an account?{" "}
                 <NavLink
                   to="/login"
-                  style={{ textDecoration: "none", color: "#ff00ff" }}
+                  style={{ textDecoration: "none", color: "#ff64c4" }}
                 >
                   Login
                 </NavLink>

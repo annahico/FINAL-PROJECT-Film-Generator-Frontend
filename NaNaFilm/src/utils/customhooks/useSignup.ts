@@ -1,4 +1,3 @@
-// hooks/useRegister.ts
 import axios from 'axios';
 import { useState } from 'react';
 import { SignUPdata } from "../interface/types";
@@ -28,9 +27,14 @@ export const useRegister = (): UseRegisterResponse => {
       } else {
         setError('Registration failed with status: ' + response.status);
       }
-    } catch (error: any) {
-      // Capturar y manejar el error
-      setError(error.response?.data?.message || 'An unexpected error occurred');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        // Handle Axios specific error
+        setError(error.response?.data?.message || 'An unexpected error occurred');
+      } else {
+        // Handle non-Axios error
+        setError('An unexpected error occurred');
+      }
     } finally {
       setLoading(false);
     }
