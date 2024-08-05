@@ -124,9 +124,9 @@ const Login = () => {
                 <Typography align="center">
                   <NavLink
                     to="/signup"
-                    style={{ textDecoration: "none", color: "#1976d2" }}
+                    style={{ textDecoration: "none", color: "#ff00ff" }}
                   >
-                    Don't have an account? Register
+                    Do not have an account? Register
                   </NavLink>
                 </Typography>
               </Box>

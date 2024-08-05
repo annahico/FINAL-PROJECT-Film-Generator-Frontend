@@ -1,42 +1,33 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Movie } from "../../utils/interface/types";
-
-interface UserState {
-  [x: string]: unknown;
-  loading: boolean;
-  movies: Movie[];
-  favMovies: Movie[];
-  isSearch: boolean;
-  Movies: Movie[];
-}
+import { Movie, UserState } from "../../utils/interface/types";
 
 const initialState: UserState = {
-  loading: false,
-  movies: [],
-  favMovies: [],
-  isSearch: false,
-  Movies: []
+    Movies: [],           
+    loading: false,
+    movies: [],
+    favMovies: [],
+    isSearch: false,
 };
 
-const userSlice = createSlice({
-  name: "movie",
-  initialState,
-  reducers: {
-    setLoading(state, action: PayloadAction<boolean>) {
-      state.loading = action.payload;
+const movieSlice = createSlice({
+    name: "movies",
+    initialState,
+    reducers: {
+        setLoading(state, action: PayloadAction<boolean>) {
+            state.loading = action.payload;
+        },
+        setMovies(state, action: PayloadAction<Movie[]>) {
+            state.movies = action.payload;
+        },
+        setFavMovies(state, action: PayloadAction<Movie[]>) {
+            state.favMovies = action.payload;
+        },
+        setIsSearch(state, action: PayloadAction<boolean>) {
+            state.isSearch = action.payload;
+        }
     },
-    setMovies(state, action: PayloadAction<Movie[]>) {
-      state.movies = action.payload;
-    },
-    setFavMovies(state, action: PayloadAction<Movie[]>) {
-      state.favMovies = action.payload;
-    },
-    setIsSearch(state, action: PayloadAction<boolean>) {
-      state.isSearch = action.payload;
-    }
-  },
 });
 
-export const { setLoading, setMovies, setFavMovies, setIsSearch } = userSlice.actions;
+export const { setLoading, setMovies, setFavMovies, setIsSearch } = movieSlice.actions;
 
-export default userSlice.reducer;
+export default movieSlice.reducer;

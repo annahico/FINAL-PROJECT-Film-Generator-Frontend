@@ -57,7 +57,7 @@ const FavMovies = () => {
           sx={{ height: "100%" }}
         >
           <Typography variant="h6" align="center">
-            You Don't Have Any Favorite Movies
+            You Do not Have Any Favorite Movies
           </Typography>
         </Grid>
       )}

@@ -3,7 +3,7 @@ import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import Loader from "../../component/common/Loader"; // Ensure you have a Loader component
+import Loader from "../../component/common/Loader";
 import { setLoading } from "../../redux/slices/movieSlice";
 import { RootState } from "../../redux/store";
 import { signUp } from "../../services/operations/Authapi";
@@ -33,7 +33,7 @@ const SignUp = () => {
       dispatch(setLoading(true));
       console.log("register", data);
       const { name, email, password } = data;
-      dispatch(signUp(name, email, password, navigate) as unknown);
+      await dispatch(signUp(name, email, password, navigate)); // Asegúrate de que signUp es una función asincrónica si se necesita await
     } catch (error) {
       console.error("Registration error:", error);
     } finally {
@@ -132,7 +132,7 @@ const SignUp = () => {
                 Already have an account?{" "}
                 <NavLink
                   to="/login"
-                  style={{ textDecoration: "none", color: "#1976d2" }}
+                  style={{ textDecoration: "none", color: "#ff00ff" }}
                 >
                   Login
                 </NavLink>

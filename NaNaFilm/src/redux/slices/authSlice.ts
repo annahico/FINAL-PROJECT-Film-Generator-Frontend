@@ -1,3 +1,4 @@
+// src/redux/slices/authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState, User } from "../../utils/interface/types";
 
@@ -15,7 +16,7 @@ const getLocalStorageItem = <T>(key: string): T | null => {
 // Define the initial state for the auth slice
 const initialState: AuthState = {
   currentUser: getLocalStorageItem<User>("user"),
-  token: getLocalStorageItem<string>("token") ?? null, // Default to null if getLocalStorageItem returns null
+  token: getLocalStorageItem<string>("token") ?? null,
 };
 
 // Create the auth slice
