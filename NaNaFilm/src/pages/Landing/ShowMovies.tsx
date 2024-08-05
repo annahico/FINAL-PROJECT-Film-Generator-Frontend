@@ -1,4 +1,6 @@
-import { Grid } from "@mui/material";
+// ShowMovies.tsx
+
+import { Grid, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import Loader from "../../component/common/Loader";
@@ -25,20 +27,22 @@ const ShowMovies: React.FC = () => {
   ) : (
     <Grid container spacing={2} sx={{ marginTop: "5px" }}>
       {Movies.length > 0 ? (
-        Movies.map((ele, index) => (
-          <Grid key={index} item xs={12}>
+        Movies.map((movie) => (
+          <Grid key={movie._id} item xs={12} sm={6} md={4}>
             <MovieCard
-              Title={ele.Title}
-              Poster={ele.Poster}
-              Ratings={ele.Ratings[1]?.Value || "N/A"}
-              Plot={ele.Plot}
-              Year={ele.Year}
-              _id={ele._id}
+              Title={movie.Title}
+              Poster={movie.Poster}
+              Ratings={movie.Ratings[1]?.Value || "N/A"}
+              Plot={movie.Plot}
+              Year={movie.Year}
+              _id={movie._id}
             />
           </Grid>
         ))
       ) : (
-        <div>No movies available.</div>
+        <Typography variant="h6" align="center" sx={{ width: "100%" }}>
+          No films available.
+        </Typography>
       )}
     </Grid>
   );

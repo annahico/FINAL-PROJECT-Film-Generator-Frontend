@@ -20,7 +20,6 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { UnknownAction } from "redux";
 import {
   setFavMovies,
   setIsSearch,
@@ -43,16 +42,16 @@ interface FormValues {
 const Navbar = () => {
   const navigate = useNavigate();
   const { control, handleSubmit } = useForm<FormValues>();
-
-  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
+  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
   const token: string = useSelector(
     (state: RootState) => state.auth.token
   ) as string;
   const loading = useSelector((state: RootState) => state.movies.loading);
+  const wholedata = useSelector((state: RootState) => state.movies.Movies);
 
   const dispatch = useDispatch();
 
@@ -77,8 +76,6 @@ const Navbar = () => {
     fetchAndSetMovies();
   }, [token, dispatch]);
 
-  const wholedata = useSelector((state: RootState) => state.movies.Movies);
-
   const searchMovies = (query: string): Movie[] => {
     if (!query) return wholedata;
     const lowerCaseQuery = query.toLowerCase();
@@ -91,9 +88,10 @@ const Navbar = () => {
   };
 
   const onSubmit: SubmitHandler<FormValues> = ({ searchTerm }) => {
-    if (searchTerm.trim().length > 0) {
+    const trimmedSearchTerm = searchTerm.trim();
+    if (trimmedSearchTerm.length > 0) {
       dispatch(setIsSearch(true));
-      const result = searchMovies(searchTerm);
+      const result = searchMovies(trimmedSearchTerm);
       dispatch(setMovies(result));
     } else {
       dispatch(setIsSearch(false));
@@ -104,7 +102,7 @@ const Navbar = () => {
   const handleLoginOrLogout = () => {
     if (currentUser) {
       try {
-        dispatch(logout(navigate) as unknown as UnknownAction);
+        dispatch(logout(navigate));
         toast.success("Logout Successfully");
       } catch (err) {
         console.error("Logout failed", err);
@@ -232,23 +230,23 @@ const Navbar = () => {
           </Drawer>
 
           {!isSmallScreen && (
-            <Grid item xs={6} sm={3} md={2}>
-              <Box display="flex" justifyContent="flex-end">
-                <NavLink to="/favmovie" style={{ textDecoration: "none" }}>
-                  <Button sx={{ color: "white" }}>Favorite</Button>
-                </NavLink>
-              </Box>
-            </Grid>
-          )}
+            <>
+              <Grid item xs={6} sm={3} md={2}>
+                <Box display="flex" justifyContent="flex-end">
+                  <NavLink to="/favmovie" style={{ textDecoration: "none" }}>
+                    <Button sx={{ color: "white" }}>Favorite</Button>
+                  </NavLink>
+                </Box>
+              </Grid>
 
-          {!isSmallScreen && (
-            <Grid item xs={6} sm={3} md={3}>
-              <Box display="flex" justifyContent="flex-end">
-                <Button onClick={handleLoginOrLogout} sx={{ color: "white" }}>
-                  {currentUser ? "Logout" : "Login"}
-                </Button>
-              </Box>
-            </Grid>
+              <Grid item xs={6} sm={3} md={3}>
+                <Box display="flex" justifyContent="flex-end">
+                  <Button onClick={handleLoginOrLogout} sx={{ color: "white" }}>
+                    {currentUser ? "Logout" : "Login"}
+                  </Button>
+                </Box>
+              </Grid>
+            </>
           )}
         </Grid>
       </AppBar>
