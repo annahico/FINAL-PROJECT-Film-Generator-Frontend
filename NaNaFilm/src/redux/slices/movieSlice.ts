@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Movie } from "../../utils/interface/types"; // Ajusta la importación según tu estructura
+import { Movie } from "../../utils/interface/types";
 
 interface UserState {
+  [x: string]: unknown;
   loading: boolean;
   movies: Movie[];
   favMovies: Movie[];
