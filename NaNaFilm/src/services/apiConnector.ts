@@ -24,7 +24,7 @@ axiosInstance.interceptors.response.use(response => {
 interface ApiConnectorParams {
     method: Method;
     url: string;
-    bodyData?: unknown;
+    data?: unknown; // Cambiado a `data` para consistencia
     headers?: Record<string, string>;
     params?: Record<string, unknown>;
 }
@@ -32,7 +32,7 @@ interface ApiConnectorParams {
 export const apiConnector = async <T>({
     method,
     url,
-    bodyData,
+    data,
     headers,
     params,
 }: ApiConnectorParams): Promise<T> => {
@@ -40,9 +40,9 @@ export const apiConnector = async <T>({
         const response = await axiosInstance({
             method,
             url,
-            data: bodyData ?? null,
-            headers: headers ?? undefined,
-            params: params ?? undefined,
+            data, // Usar `data` en lugar de `bodyData`
+            headers,
+            params,
         });
         return response.data;
     } catch (error) {

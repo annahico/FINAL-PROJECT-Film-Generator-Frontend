@@ -14,8 +14,8 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setLoading } from "../../redux/slices/movieSlice";
 import { RootState } from "../../redux/store";
-import { addComment, fetchMovies } from "../../services/operations/Moviesapi";
-import { Comment, Movie } from "../../utils/interface/types";
+import { addComment, fetchFavMovie } from "../../services/operations/Moviesapi";
+import { Movie } from "../../utils/interface/types";
 import Loader from "./Loader";
 
 interface CommentFormInput {
@@ -54,8 +54,9 @@ const MovieDetailCard: React.FC = () => {
     dispatch(setLoading(true));
     try {
       await addComment(token, _id!, text, rating);
-      const moviesData = await fetchMovies();
-      setMovies(moviesData || []); // Si moviesData es null, asigna un array vacío
+      const moviesData = await fetchFavMovie(token);
+      setMovies(moviesData.favMovies || []);
+      toast.success("Comment added successfully!");
     } catch (error) {
       console.error("Error submitting comment:", error);
       toast.error("Failed to submit comment");
@@ -71,8 +72,8 @@ const MovieDetailCard: React.FC = () => {
     const fetchData = async () => {
       try {
         dispatch(setLoading(true));
-        const moviesData = await fetchMovies();
-        setMovies(moviesData || []); // Si moviesData es null, asigna un array vacío
+        const moviesData = await fetchFavMovie(token);
+        setMovies(moviesData.favMovies || []);
       } catch (error) {
         console.error("Error fetching movie details:", error);
         toast.error("Failed to fetch movie details");
@@ -82,10 +83,10 @@ const MovieDetailCard: React.FC = () => {
     };
 
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   const movie = movies.find((item) => item._id === _id);
-  const commentArray = movie?.commentIds as Comment[];
+  const commentArray = movie?.commentIds || [];
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
@@ -202,7 +203,7 @@ const MovieDetailCard: React.FC = () => {
                   </Typography>
                 )}
 
-                {commentArray && commentArray.length > 0 ? (
+                {commentArray.length > 0 ? (
                   commentArray.map((comment, index) => (
                     <div key={index} style={{ marginTop: "1rem" }}>
                       <Typography variant="body1" gutterBottom>

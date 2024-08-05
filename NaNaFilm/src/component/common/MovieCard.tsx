@@ -1,3 +1,5 @@
+// MovieCard.tsx
+
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
   Card,
@@ -68,12 +70,12 @@ const MovieCard: React.FC<MovieCardProps> = ({
       if (!isFavorite) {
         await addFavMovie(token, _id);
       } else {
-        const updatedFavMovies = await removeFavMovie(token, _id); // Ahora es siempre Movie[]
-        dispatch(setFavMovies(updatedFavMovies)); // Actualizado
+        const updatedFavMovies = await removeFavMovie(token, _id);
+        dispatch(setFavMovies(updatedFavMovies));
       }
       setIsFavorite((prev) => !prev);
     } catch (error) {
-      console.error("Error toggling favorite status:", error);
+      console.error("Error al alternar el estado de favorito:", error);
     }
   };
 
@@ -101,12 +103,12 @@ const MovieCard: React.FC<MovieCardProps> = ({
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
             <Typography variant="body2" color="textSecondary">
-              Year: {Year}
+              Año: {Year}
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="body2" color="textSecondary">
-              Rating: {Ratings}
+              Calificación: {Ratings}
             </Typography>
           </Grid>
         </Grid>

@@ -44,7 +44,6 @@ export interface Movie {
     commentIds: Comment[];
 }
 
-
 export interface UserState {
     Movies: Movie[];
     loading: boolean;
@@ -76,3 +75,5 @@ export interface AuthState {
     currentUser: User | null;
     token: string | null; 
 }
+
+

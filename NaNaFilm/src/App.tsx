@@ -1,35 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Error from "./component/common/Error";
+import MovieDetailCard from "./component/common/MovieDetailsCard";
+import Navbar from "./component/common/Navbar";
+import OpenRoute from "./component/common/routes/OpenRoute";
+import PrivateRoute from "./component/common/routes/PrivateRoute";
+import ShowMovies from "./pages/Landing/ShowMovies";
+import FavMovies from "./pages/user/FavMovies";
+import Login from "./pages/user/Login";
+import SignUp from "./pages/user/SignUp";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <ToastContainer />
+      <Navbar />
+      <Routes>
+        {/* Ruta para la página principal */}
+        <Route path="/" element={<ShowMovies />} />
+
+        {/* Rutas protegidas para usuarios no autenticados */}
+        <Route
+          path="/login"
+          element={
+            <OpenRoute>
+              <Login />
+            </OpenRoute>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <OpenRoute>
+              <SignUp />
+            </OpenRoute>
+          }
+        />
+
+        {/* Rutas protegidas para usuarios autenticados */}
+        <Route
+          path="/favmovie"
+          element={
+            <PrivateRoute>
+              <FavMovies />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Ruta para detalles de la película */}
+        <Route path="/movie-details/:_id" element={<MovieDetailCard />} />
+
+        {/* Ruta para manejar errores */}
+        <Route path="*" element={<Error />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

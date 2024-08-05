@@ -1,29 +1,20 @@
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
+import { Movie } from "../../utils/interface/types"; // Importa la interfaz Movie
 import { movieEndPoints } from "../api";
 import { apiConnector } from "../apiConnector";
 
-// Definición de las interfaces para las respuestas de la API
 interface ApiResponse<T> {
     success: boolean;
     message?: string;
     data?: T;
 }
 
-interface Movie {
-    _id: string;
-    Title: string;
-    Poster: string;
-    Ratings: { Value: string }[]; // Cambiado a un array de objetos con Value
-    Plot: string;
-    Year: string;
-}
-
 interface FavMovieResponse {
     favMovies?: Movie[];
 }
 
-export const fetchFavMovie = async (token: string): Promise<FavMovieResponse | null> => {
+export const fetchFavMovie = async (token: string): Promise<FavMovieResponse> => {
     const { Fav_Movies_API } = movieEndPoints;
 
     try {
@@ -39,13 +30,49 @@ export const fetchFavMovie = async (token: string): Promise<FavMovieResponse | n
             throw new Error(response.message || "Failed to fetch favorite movies");
         }
 
-        return response.data || { favMovies: [] }; // Devolver el objeto directamente
+        // Retorna un objeto con favMovies o una lista vacía por defecto
+        return response.data || { favMovies: [] };
     } catch (error) {
         if (error instanceof AxiosError) {
             toast.error(error.response?.data.message || "Failed to fetch favorite movies");
         } else {
             toast.error("Failed to fetch favorite movies");
         }
-        return null; // Devolver null en caso de error
+        return { favMovies: [] }; // Retorna una lista vacía en caso de error
+    }
+}
+
+
+export const addComment = async (token: string, movieId: string, text: string, rating: string) => {
+    const { ADD_COMMENT_API } = movieEndPoints;
+
+    try {
+        const response = await apiConnector({
+            method: "POST",
+            url: ADD_COMMENT_API,
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            data: {
+                movieId,
+                text,
+                rating
+            }
+        });
+
+        const responseData = response as ApiResponse<unknown>;
+
+        if (!responseData.success) {
+            throw new Error(responseData.message || "Failed to add comment");
+        }
+
+        return responseData.data;
+    } catch (error) {
+        if (error instanceof AxiosError) {
+            toast.error(error.response?.data.message || "Failed to add comment");
+        } else {
+            toast.error("Failed to add comment");
+        }
+        throw error;
     }
 }
