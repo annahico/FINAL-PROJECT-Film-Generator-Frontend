@@ -1,6 +1,7 @@
+// src/services/apiConnector.ts
 import axios, { Method } from "axios";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:4000/api/v1';
+const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:3000/api/v1';
 
 export const axiosInstance = axios.create({
     baseURL: BASE_URL,
@@ -40,7 +41,7 @@ export const apiConnector = async <T>({
         const response = await axiosInstance({
             method,
             url,
-            data, // Usar `data` en lugar de `bodyData`
+            data,
             headers,
             params,
         });

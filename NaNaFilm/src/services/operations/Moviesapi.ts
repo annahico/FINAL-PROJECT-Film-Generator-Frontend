@@ -1,19 +1,22 @@
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
-import { Movie } from "../../utils/interface/types"; // Asegúrate de que esta ruta sea correcta
+import { Movie } from "../../utils/interface/types";
 import { movieEndPoints } from "../api";
 import { apiConnector } from "../apiConnector";
 
+// Interfaz para la respuesta de la API
 interface ApiResponse<T> {
     success: boolean;
     message?: string;
     data?: T;
 }
 
+// Interfaz para la respuesta de películas favoritas
 interface FavMovieResponse {
-    favMovies?: Movie[];
+    favMovies: Movie[];
 }
 
+// Función para obtener las películas favoritas
 export const fetchFavMovie = async (token: string): Promise<FavMovieResponse> => {
     const { Fav_Movies_API } = movieEndPoints;
 
@@ -29,23 +32,17 @@ export const fetchFavMovie = async (token: string): Promise<FavMovieResponse> =>
         if (!response.success) {
             throw new Error(response.message || "Failed to fetch favorite movies");
         }
-        if (response.data) {
-            return response.data;
-        }
 
-        // Devuelve una estructura vacía si no hay datos disponibles
-        return { favMovies: [] };
+        // Devuelve la data directamente, no es necesario acceder a response.data.favMovies
+        return response.data || { favMovies: [] };
     } catch (error) {
-        if (error instanceof AxiosError) {
-            toast.error(error.response?.data.message || "Failed to fetch favorite movies");
-        } else {
-            toast.error("Failed to fetch favorite movies");
-        }
+        const errorMessage = error instanceof AxiosError ? error.response?.data.message : "Failed to fetch favorite movies";
+        toast.error(errorMessage);
         return { favMovies: [] }; // Retorna una lista vacía en caso de error
     }
 }
 
-
+// Función para agregar una película a favoritos
 export const addFavMovie = async (token: string, movieId: string): Promise<FavMovieResponse> => {
     const { Add_Fav_Movie_API } = movieEndPoints;
 
@@ -65,15 +62,13 @@ export const addFavMovie = async (token: string, movieId: string): Promise<FavMo
 
         return response.data || { favMovies: [] };
     } catch (error) {
-        if (error instanceof AxiosError) {
-            toast.error(error.response?.data.message || "Failed to add favorite movie");
-        } else {
-            toast.error("Failed to add favorite movie");
-        }
+        const errorMessage = error instanceof AxiosError ? error.response?.data.message : "Failed to add favorite movie";
+        toast.error(errorMessage);
         throw error;
     }
 }
 
+// Función para eliminar una película de favoritos
 export const removeFavMovie = async (token: string, movieId: string): Promise<Movie[]> => {
     const { REMOVE_Fav_Movie_API } = movieEndPoints;
 
@@ -91,52 +86,58 @@ export const removeFavMovie = async (token: string, movieId: string): Promise<Mo
             throw new Error(response.message || "Failed to remove favorite movie");
         }
 
-        if (response.data && response.data.favMovies) {
-            return response.data.favMovies;
-        }
-
-        // Devuelve una lista vacía si no hay datos disponibles
-        return [];
+        return response.data?.favMovies || [];
     } catch (error) {
-        if (error instanceof AxiosError) {
-            toast.error(error.response?.data.message || "Failed to remove favorite movie");
-        } else {
-            toast.error("Failed to remove favorite movie");
-        }
+        const errorMessage = error instanceof AxiosError ? error.response?.data.message : "Failed to remove favorite movie";
+        toast.error(errorMessage);
         throw error;
     }
 }
 
-export const addComment = async (token: string, movieId: string, text: string, rating: string) => {
+// Función para agregar un comentario
+export const addComment = async (token: string, movieId: string, text: string, rating: string): Promise<unknown> => {
     const { ADD_COMMENT_API } = movieEndPoints;
 
     try {
-        const response = await apiConnector({
+        const response: ApiResponse<unknown> = await apiConnector({
             method: "POST",
             url: ADD_COMMENT_API,
             headers: {
                 Authorization: `Bearer ${token}`
             },
-            data: {
-                movieId,
-                text,
-                rating
-            }
+            data: { movieId, text, rating }
         });
 
-        const responseData = response as ApiResponse<unknown>;
-
-        if (!responseData.success) {
-            throw new Error(responseData.message || "Failed to add comment");
+        if (!response.success) {
+            throw new Error(response.message || "Failed to add comment");
         }
 
-        return responseData.data;
+        return response.data;
     } catch (error) {
-        if (error instanceof AxiosError) {
-            toast.error(error.response?.data.message || "Failed to add comment");
-        } else {
-            toast.error("Failed to add comment");
-        }
+        const errorMessage = error instanceof AxiosError ? error.response?.data.message : "Failed to add comment";
+        toast.error(errorMessage);
         throw error;
     }
 }
+
+// Función para obtener todas las películas
+export const fetchMovies = async (): Promise<Movie[]> => {
+    const { All_Movies_API } = movieEndPoints;
+
+    try {
+        const response: ApiResponse<Movie[]> = await apiConnector({
+            method: "GET",
+            url: All_Movies_API
+        });
+
+        if (!response.success) {
+            throw new Error(response.message || "Failed to fetch movies");
+        }
+
+        return response.data || [];
+    } catch (error) {
+        const errorMessage = error instanceof AxiosError ? error.response?.data.message : "Failed to fetch movies";
+        toast.error(errorMessage);
+        return [];
+    }
+};
