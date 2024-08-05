@@ -34,11 +34,16 @@ export interface Movie {
     language: string;
     country: string;
     awards: string;
-    ratings: { source: string; value: string; }[]; 
+    ratings: {
+        Value: string; 
+        source: string; 
+        value: string; 
+    }[];
     poster: string;
     response: string;
-    commentIds: Comment[]; 
+    commentIds: Comment[];
 }
+
 
 export interface UserState {
     Movies: Movie[];
