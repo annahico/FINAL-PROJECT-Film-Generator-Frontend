@@ -1,4 +1,3 @@
-// src/components/common/Navbar.tsx
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import {
@@ -120,7 +119,7 @@ const Navbar = () => {
   return (
     <>
       {loading && <Loader />}
-      <AppBar position="static" color="secondary">
+      <AppBar position="fixed" color="secondary">
         <Grid
           container
           justifyContent="space-between"
@@ -235,14 +234,17 @@ const Navbar = () => {
               <Grid item xs={6} sm={3} md={2}>
                 <Box display="flex" justifyContent="flex-end">
                   <NavLink to="/favmovie" style={{ textDecoration: "none" }}>
-                    <Button sx={{ color: "white" }}>Favorite</Button>
+                    <Button sx={{ color: "black", mx: 1 }}>Favorite</Button>
                   </NavLink>
                 </Box>
               </Grid>
 
               <Grid item xs={6} sm={3} md={3}>
                 <Box display="flex" justifyContent="flex-end">
-                  <Button onClick={handleLoginOrLogout} sx={{ color: "white" }}>
+                  <Button
+                    onClick={handleLoginOrLogout}
+                    sx={{ color: "black", mx: 1 }}
+                  >
                     {currentUser ? "Logout" : "Login"}
                   </Button>
                 </Box>

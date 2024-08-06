@@ -4,6 +4,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { UnknownAction } from "redux";
 import Loader from "../../component/common/Loader";
 import { setLoading } from "../../redux/slices/movieSlice";
 import { RootState } from "../../redux/store";
@@ -54,26 +55,31 @@ const Login = () => {
           sx={{
             display: "flex",
             justifyContent: "center",
-            flexDirection: "column",
-            mt: "2rem",
+            alignItems: "center",
+            minHeight: "100vh",
+            padding: "1rem",
           }}
         >
-          <Typography variant="h2" component="h2" align="center" gutterBottom>
-            Login
-          </Typography>
-
           <Box
             sx={{
-              width: "80%",
+              width: "100%",
               maxWidth: "400px",
               padding: "2rem",
               border: "1px solid #ccc",
               boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
               borderRadius: "8px",
               backgroundColor: "white",
-              position: "relative",
             }}
           >
+            <Typography
+              variant="h4"
+              component="h1"
+              align="center"
+              gutterBottom
+              sx={{ color: "black" }}
+            >
+              Login
+            </Typography>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Box
                 sx={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}

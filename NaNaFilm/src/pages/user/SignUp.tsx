@@ -30,17 +30,13 @@ const SignUp = () => {
 
   const onSubmit: SubmitHandler<SignUPdata> = async (data) => {
     try {
-      dispatch(setLoading(true)); // Show loader when starting the request
-      console.log("register", data);
+      dispatch(setLoading(true));
       const { name, email, password } = data;
-
-      // Call the signUp action
       await dispatch(signUp(name, email, password, navigate));
     } catch (error) {
-      // Log and handle any errors
       console.error("Registration error:", error);
     } finally {
-      dispatch(setLoading(false)); // Hide loader once request completes
+      dispatch(setLoading(false));
     }
   };
 
@@ -50,99 +46,109 @@ const SignUp = () => {
       sx={{
         display: "flex",
         justifyContent: "center",
-        flexDirection: "column",
-        mt: "2rem",
+        alignItems: "center",
+        minHeight: "100vh",
+        padding: "1rem",
       }}
     >
-      <Typography variant="h2" component="h2" align="center" gutterBottom>
-        Registration
-      </Typography>
-
       <Box
         sx={{
-          width: "80%",
+          width: "100%",
           maxWidth: "400px",
           padding: "2rem",
           border: "1px solid #ccc",
           boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
           borderRadius: "8px",
           backgroundColor: "white",
-          position: "relative",
         }}
       >
         {loading ? (
-          <Loader /> // Display loader when loading is true
+          <Loader />
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <Controller
-                name="name"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    type="text"
-                    label="Name"
-                    variant="outlined"
-                    fullWidth
-                    error={!!errors.name}
-                    helperText={errors.name ? errors.name.message : ""}
-                  />
-                )}
-              />
-              <Controller
-                name="email"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    type="email"
-                    label="Email"
-                    variant="outlined"
-                    fullWidth
-                    error={!!errors.email}
-                    helperText={errors.email ? errors.email.message : ""}
-                  />
-                )}
-              />
-              <Controller
-                name="password"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    type="password"
-                    label="Password"
-                    variant="outlined"
-                    fullWidth
-                    error={!!errors.password}
-                    helperText={errors.password ? errors.password.message : ""}
-                  />
-                )}
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                color="secondary"
-                fullWidth
-                sx={{ mt: 2 }}
+          <>
+            <Typography
+              variant="h4"
+              component="h1"
+              align="center"
+              gutterBottom
+              sx={{ color: "black" }}
+            >
+              Registration
+            </Typography>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Box
+                sx={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
               >
-                Sign Up
-              </Button>
-              <Typography align="center" mt={2} color="black">
-                Already have an account?{" "}
-                <NavLink
-                  to="/login"
-                  style={{ textDecoration: "none", color: "#ff64c4" }}
+                <Controller
+                  name="name"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="text"
+                      label="Name"
+                      variant="outlined"
+                      fullWidth
+                      error={!!errors.name}
+                      helperText={errors.name ? errors.name.message : ""}
+                    />
+                  )}
+                />
+                <Controller
+                  name="email"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="email"
+                      label="Email"
+                      variant="outlined"
+                      fullWidth
+                      error={!!errors.email}
+                      helperText={errors.email ? errors.email.message : ""}
+                    />
+                  )}
+                />
+                <Controller
+                  name="password"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="password"
+                      label="Password"
+                      variant="outlined"
+                      fullWidth
+                      error={!!errors.password}
+                      helperText={
+                        errors.password ? errors.password.message : ""
+                      }
+                    />
+                  )}
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="secondary"
+                  fullWidth
                 >
-                  Login
-                </NavLink>
-              </Typography>
-            </Box>
-          </form>
+                  Sign Up
+                </Button>
+                <Typography align="center" mt={2} color="black">
+                  Already have an account?{" "}
+                  <NavLink
+                    to="/login"
+                    style={{ textDecoration: "none", color: "#ff64c4" }}
+                  >
+                    Login
+                  </NavLink>
+                </Typography>
+              </Box>
+            </form>
+          </>
         )}
       </Box>
     </Container>
