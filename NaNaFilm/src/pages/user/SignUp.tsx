@@ -33,7 +33,7 @@ const SignUp = () => {
       dispatch(setLoading(true));
       console.log("register", data);
       const { name, email, password } = data;
-      await dispatch(signUp(name, email, password, navigate)); // Asegúrate de que signUp es una función asincrónica si se necesita await
+      dispatch(signUp(name, email, password, navigate)); // Asegúrate de que signUp es una función asincrónica si se necesita await
     } catch (error) {
       console.error("Registration error:", error);
     } finally {

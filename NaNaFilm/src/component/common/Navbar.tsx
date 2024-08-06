@@ -119,7 +119,7 @@ const Navbar = () => {
   return (
     <>
       {loading && <Loader />}
-      <AppBar position="static" color="primary">
+      <AppBar position="static" color="secondary">
         <Grid
           container
           justifyContent="space-between"

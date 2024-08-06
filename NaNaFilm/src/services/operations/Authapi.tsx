@@ -64,7 +64,7 @@ export const signUp = (
   email: string,
   password: string,
   navigate: NavigateFunction
-): ThunkResult<void> => {
+) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return async (_dispatch: Dispatch) => {
     try {
