@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import Loader from "../../component/common/Loader";
 import { setLoading } from "../../redux/slices/movieSlice";
-import { RootState } from "../../redux/store";
+import { AppDispatch, RootState } from "../../redux/store";
 import { signUp } from "../../services/operations/Authapi";
 import { SignUPdata } from "../../utils/interface/types";
 import { RegisterSchema } from "../../utils/schema/userSchema";
 
 const SignUp = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const loading = useSelector((state: RootState) => state.movies.loading);
 
@@ -30,14 +30,17 @@ const SignUp = () => {
 
   const onSubmit: SubmitHandler<SignUPdata> = async (data) => {
     try {
-      dispatch(setLoading(true));
+      dispatch(setLoading(true)); // Show loader when starting the request
       console.log("register", data);
       const { name, email, password } = data;
-      dispatch(signUp(name, email, password, navigate)); // Asegúrate de que signUp es una función asincrónica si se necesita await
+
+      // Call the signUp action
+      await dispatch(signUp(name, email, password, navigate));
     } catch (error) {
+      // Log and handle any errors
       console.error("Registration error:", error);
     } finally {
-      dispatch(setLoading(false));
+      dispatch(setLoading(false)); // Hide loader once request completes
     }
   };
 
@@ -123,12 +126,13 @@ const SignUp = () => {
               <Button
                 type="submit"
                 variant="contained"
-                color="primary"
+                color="secondary"
                 fullWidth
+                sx={{ mt: 2 }}
               >
                 Sign Up
               </Button>
-              <Typography align="center" mt={2}>
+              <Typography align="center" mt={2} color="black">
                 Already have an account?{" "}
                 <NavLink
                   to="/login"

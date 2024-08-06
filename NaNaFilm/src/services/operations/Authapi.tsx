@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { NavigateFunction } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Dispatch } from "redux";
+import { AnyAction, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { setCurrentUser, setToken } from "../../redux/slices/authSlice";
 import { setFavMovies } from "../../redux/slices/movieSlice";
@@ -19,18 +19,17 @@ interface SignUpResponse {
   };
 }
 
-// Define el tipo para ThunkAction
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ThunkResult<R> = ThunkAction<R, RootState, undefined, any>;
+type ThunkResult<R> = ThunkAction<R, RootState, undefined, AnyAction>;
 
+// Función de login
 export const login = (
   email: string,
   password: string,
   navigate: NavigateFunction
 ): ThunkResult<void> => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<AnyAction>) => {
     try {
-      const response: LoginResponse = await apiConnector({
+      const response: LoginResponse = await apiConnector<LoginResponse>({
         method: "POST",
         url: LOGIN_API,
         data: { email, password },
@@ -59,16 +58,17 @@ export const login = (
   };
 };
 
+// Función de signup
 export const signUp = (
   name: string,
   email: string,
   password: string,
   navigate: NavigateFunction
-) => {
+): ThunkResult<void> => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  return async (_dispatch: Dispatch) => {
+  return async (_dispatch: Dispatch<AnyAction>) => {
     try {
-      const response: SignUpResponse = await apiConnector({
+      const response: SignUpResponse = await apiConnector<SignUpResponse>({
         method: "POST",
         url: SIGNUP_API,
         data: { name, email, password },
@@ -91,8 +91,9 @@ export const signUp = (
   };
 };
 
+// Función de logout
 export const logout = (navigate: NavigateFunction): ThunkResult<void> => {
-  return (dispatch: Dispatch) => {
+  return (dispatch: Dispatch<AnyAction>) => {
     try {
       dispatch(setToken(null));
       dispatch(setCurrentUser(null));

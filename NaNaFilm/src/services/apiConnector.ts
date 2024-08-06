@@ -1,4 +1,3 @@
-// src/services/apiConnector.ts
 import axios, { Method } from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:3000/api/v1';
@@ -25,7 +24,7 @@ axiosInstance.interceptors.response.use(response => {
 interface ApiConnectorParams {
     method: Method;
     url: string;
-    data?: unknown; // Cambiado a `data` para consistencia
+    data?: unknown;
     headers?: Record<string, string>;
     params?: Record<string, unknown>;
 }

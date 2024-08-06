@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material";
-import { Key, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MovieCard from "../../component/common/MovieCard";
 import { setFavMovies } from "../../redux/slices/movieSlice";
@@ -17,7 +17,7 @@ const FavMovies = () => {
         const res = await fetchFavMovie(token);
 
         if (res && Array.isArray(res.favMovies)) {
-          dispatch(setFavMovies(res.favMovies || []));
+          dispatch(setFavMovies(res.favMovies));
         } else {
           dispatch(setFavMovies([])); // Manejo adecuado si `res` o `res.favMovies` es nulo o indefinido
         }
@@ -35,8 +35,8 @@ const FavMovies = () => {
   return (
     <Grid container spacing={2} sx={{ marginTop: "5px" }}>
       {favMovies.length > 0 ? (
-        favMovies.map((ele: Movie, index: Key) => (
-          <Grid key={index} item xs={12}>
+        favMovies.map((ele: Movie) => (
+          <Grid key={ele._id} item xs={12}>
             <MovieCard
               Title={ele.title}
               Poster={ele.poster}
@@ -57,7 +57,7 @@ const FavMovies = () => {
           sx={{ height: "100%" }}
         >
           <Typography variant="h6" align="center">
-            You Do not Have Any Favorite Movies
+            You Do Not Have Any Favorite Movies
           </Typography>
         </Grid>
       )}

@@ -4,7 +4,6 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { UnknownAction } from "redux";
 import Loader from "../../component/common/Loader";
 import { setLoading } from "../../redux/slices/movieSlice";
 import { RootState } from "../../redux/store";
@@ -121,12 +120,13 @@ const Login = () => {
                 >
                   Login
                 </Button>
-                <Typography align="center">
+                <Typography align="center" mt={2} color="black">
+                  Do not have an account?{" "}
                   <NavLink
                     to="/signup"
                     style={{ textDecoration: "none", color: "#ff00ff" }}
                   >
-                    Do not have an account? Register
+                    Register
                   </NavLink>
                 </Typography>
               </Box>
